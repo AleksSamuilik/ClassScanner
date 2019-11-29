@@ -1,128 +1,135 @@
 package it.alex.lab12;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class ClassScanner {
 
-    private void printModifiers(Class clazz) {
-        int classModifiers = clazz.getModifiers();
-        System.out.print("Class modifiers: ");
+    private String getModifiers(int classModifiers) {
+        StringBuilder builder = new StringBuilder();
         if (Modifier.isAbstract(classModifiers)) {
-            System.out.print("abstract ");
+            builder.append("abstract ");
         }
         if (Modifier.isFinal(classModifiers)) {
-            System.out.print("final ");
+            builder.append("final ");
         }
         if (Modifier.isInterface(classModifiers)) {
-            System.out.print("interface ");
+            builder.append("interface ");
         }
         if (Modifier.isNative(classModifiers)) {
-            System.out.print("native ");
+            builder.append("native ");
         }
         if (Modifier.isPrivate(classModifiers)) {
-            System.out.print("private ");
+            builder.append("private ");
         }
         if (Modifier.isProtected(classModifiers)) {
-            System.out.print("protected ");
+            builder.append("protected ");
         }
         if (Modifier.isPublic(classModifiers)) {
-            System.out.print("public ");
+            builder.append("public ");
         }
         if (Modifier.isStatic(classModifiers)) {
-            System.out.print("static ");
+            builder.append("static ");
         }
         if (Modifier.isStrict(classModifiers)) {
-            System.out.print("strict ");
+            builder.append("strict ");
         }
         if (Modifier.isSynchronized(classModifiers)) {
-            System.out.print("synchronized");
+            builder.append("synchronized");
         }
         if (Modifier.isTransient(classModifiers)) {
-            System.out.print("transient ");
+            builder.append("transient ");
         }
         if (Modifier.isVolatile(classModifiers)) {
-            System.out.print("volatile");
+            builder.append("volatile");
         }
-        System.out.println();
+        builder.append("\n");
+        return builder.toString();
     }
 
-    private void printMethods(Class clazz) {
-        System.out.println("Class methods: ");
+    private String getMethods(Class clazz) {
+        StringBuilder builder = new StringBuilder();
         Method[] declaredMethod = clazz.getDeclaredMethods();
         if (declaredMethod.length == 0) {
-            System.out.println("is empty.");
+            return "is empty.";
         }
         for (Method method : declaredMethod) {
-            System.out.println(method);
+            builder.append(""+method + "\n");
+
         }
+        return builder.toString();
     }
 
     private void printInterfaces(Class clazz) {
         System.out.println("Class implements interfaces: ");
+        StringBuilder builder = new StringBuilder();
         Class[] interfaces = clazz.getInterfaces();
         if (interfaces.length == 0) {
             System.out.println("is empty.");
         }
-
-        for (Class interfaces1 : interfaces) {
-            System.out.println(interfaces1);
+        for (Class interf : interfaces) {
+            builder.append(interf + "\n");
+            printBaseClass(interf);
         }
     }
 
-    private void printFields(Class clazz) {
-        System.out.println("Class fields: ");
+    private String getFields(Class clazz) {
+        StringBuilder builder = new StringBuilder();
         Field[] fields = clazz.getDeclaredFields();
         if (fields.length == 0) {
-            System.out.println("is empty.");
+            return "is empty.";
         }
-
         for (Field field : fields) {
-            System.out.println(field);
+            builder.append(field + "\n");
         }
+        return builder.toString();
     }
 
     private void printSuperClass(Class clazz) {
-        Class superclass = clazz.getSuperclass();
         System.out.println("Class extends class: ");
+        Class superclass = clazz.getSuperclass();
         if (superclass.equals(Object.class)) {
-            System.out.println(superclass.getSimpleName());
+            System.out.println("extends Object.");
         } else {
-            System.out.println(superclass.getSimpleName());
-           printFields(superclass);
-           printMethods(superclass);
+            printBaseClass(superclass);
         }
     }
 
+    private void printBaseClass(Class clazz) {
+        System.out.println("Name class: ");
+        System.out.println(clazz.getSimpleName() + "\n");
+
+        System.out.println("Class modifiers: ");
+        System.out.println(getModifiers(clazz.getModifiers()));
+
+        System.out.println("Class methods: ");
+        System.out.println(getMethods(clazz));
+
+        System.out.println("Class fields: ");
+        System.out.println(getFields(clazz));
+
+    }
 
     public void scanner(Class clazz) {
-        System.out.println("Name class - " + clazz.getSimpleName());
-        printModifiers(clazz);
-        printMethods(clazz);
-        printFields(clazz);
-        printInterfaces(clazz);
+
+        printBaseClass(clazz);
+
+        printConstructors(clazz);
+
         printSuperClass(clazz);
 
+        printInterfaces(clazz);
 
-//        System.out.println(clazz.getSimpleName());
-//        Field [] fields = clazz.getDeclaredFields();
-//        System.out.println("Fields: ");
-//        for (Field field : fields) {
-//            System.out.println(field.toString());
-//
-//        }
-//
-//        Constructor[] constructors = clazz.getConstructors();
-//        for (Constructor constructor : constructors) {
-//            Class[] paramTypes = constructor.getParameterTypes();
-//            System.out.println("Parameters constructor: ");
-//
-//            for (Class paramType : paramTypes) {
-//                System.out.println(paramType.getName() + " ");
-//            }
-//            System.out.println();
-//        }
+    }
 
+    private void printConstructors(Class clazz) {
+        System.out.println("Class constructor: ");
+        Constructor[] constructors = clazz.getConstructors();
+        for (Constructor constructor: constructors){
+            System.out.println(constructor);
+        }
+        System.out.println();
     }
 }

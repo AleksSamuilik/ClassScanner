@@ -3,7 +3,7 @@ package it.alex.lab12;
 import java.util.List;
 import java.util.Random;
 
-public class MusicPlayer extends MultimediaCenter {
+public class MusicPlayer  extends MultimediaCenter implements Music{
     private List<String> musicList;
 
 
@@ -22,6 +22,8 @@ public class MusicPlayer extends MultimediaCenter {
     }
 
 
-
-
+    @Override
+    public List getSong() {
+        return null;
+    }
 }
