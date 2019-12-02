@@ -121,7 +121,6 @@ public class ClassScanner {
         printSuperClass(clazz);
 
         printInterfaces(clazz);
-
     }
 
     private void printConstructors(Class clazz) {

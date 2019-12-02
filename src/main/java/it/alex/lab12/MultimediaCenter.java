@@ -6,6 +6,12 @@ public class MultimediaCenter {
 
     public MultimediaCenter() {
         System.out.println("Welcome to our multimedia center.");
+        this.name = "default";
+        this.volume = 10;
+    }
+
+    private void printData(){
+        System.out.println("Name "+name+",volume "+volume);
     }
 
     public String playMusic() {
@@ -19,6 +25,7 @@ public class MultimediaCenter {
     public int getVolume() {
         return volume;
     }
+
     public void setName(String name) {
         this.name = name;
     }
